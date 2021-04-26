@@ -43,6 +43,10 @@ class SessionActivity
             || $request->path() == 'api/products/byCategory'
             || $request->path() == 'api/categories/list'
             || (strpos($request->path(), 'api/categories/') !== false)
+            || $request->path() == 'api/auth/products'
+            || $request->path() == 'api/auth/categories'
+
+
 
 
 
