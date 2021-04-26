@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +17,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+
+
+Route::group([
+    'middleware' => 'auth:api'
+], function () {
+
+    // Route::apiResource('products', ProductController::class);
+    // Route::apiResource('categories', CategoryController::class);
 });
+
+
+Route::get('categories/list', [CategoryController::class, 'list']);
+Route::get('categories/{id}', [CategoryController::class, 'show']);
+Route::get('products/novelties', [ProductController::class, 'novelties']);
+Route::post('products/byCategory', [ProductController::class, 'category']);
+Route::post('products/recommended', [ProductController::class, 'listRecommended']);
