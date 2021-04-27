@@ -19,6 +19,7 @@ class Product extends JsonResource
             'image' => $this->image?$this->image:"https://sc04.alicdn.com/kf/HTB1nO0xHVXXXXcPXXXXq6xXFXXXj.jpg",
             'units' => htmlspecialchars($this->units),
             'idCategory' => $this->idCategory,
+            'active' => $this->active,
             'category_name' => $this->idCategory ? htmlspecialchars($this->category->name) : '',
             'status' => $this->status
         ];

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\ProductController;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -29,15 +30,16 @@ Route::group([
 
     Route::post('login', [AuthController::class, 'login']);
 
-Route::group([
-    'middleware' => 'auth:api'
-], function () {
-
-    Route::apiResource('products', ProductController::class);
-    Route::apiResource('categories', CategoryController::class);
+    Route::group([
+        'middleware' => 'auth:api'
+    ], function () {
+        Route::post('files/storage', [FileController::class, 'storage']);
+        Route::apiResource('products', ProductController::class);
+        Route::post('products/active/{id}', [ProductController::class, 'active']);
+        Route::apiResource('categories', CategoryController::class);
+    });
 });
 
-});
 
 
 

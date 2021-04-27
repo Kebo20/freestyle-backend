@@ -43,8 +43,8 @@ class SessionActivity
             || $request->path() == 'api/products/byCategory'
             || $request->path() == 'api/categories/list'
             || (strpos($request->path(), 'api/categories/') !== false)
-            || $request->path() == 'api/auth/products'
-            || $request->path() == 'api/auth/categories'
+             || $request->path() == 'api/auth/products'
+             || $request->path() == 'api/auth/categories'
 
 
 
@@ -58,24 +58,24 @@ class SessionActivity
                 'message' => 'Token inválido'
             ], 401);
         }
-        $last_activity = DB::table('bts_sessions')->where('session_id', $request->user()->token()->id);
+        // $last_activity = DB::table('bts_sessions')->where('session_id', $request->user()->token()->id);
 
-        if (
-            $last_activity->exists() &&
-            time() - $last_activity->value('last_active') > $this->timeout
-        ) {
-            $request->user()->token()->revoke();
-            $last_activity->delete();
-            return response()->json([
-                'message' => 'Ha superado el lapso de inactividad'
-            ], 401);
+        // if (
+        //     $last_activity->exists() &&
+        //     time() - $last_activity->value('last_active') > $this->timeout
+        // ) {
+        //     $request->user()->token()->revoke();
+        //     $last_activity->delete();
+        //     return response()->json([
+        //         'message' => 'Ha superado el lapso de inactividad'
+        //     ], 401);
             //return redirect('login');
-        } else {
-            DB::table('bts_sessions')->updateOrInsert(
-                ['session_id' => $request->user()->token()->id, 'contents' => $request->user()->token()->id],
-                ['last_active' => time()]
-            );
-        }
+        // } else {
+            // DB::table('bts_sessions')->updateOrInsert(
+            //     ['session_id' => $request->user()->token()->id, 'contents' => $request->user()->token()->id],
+            //     ['last_active' => time()]
+            // );
+        // }
 
         return $next($request);
     }

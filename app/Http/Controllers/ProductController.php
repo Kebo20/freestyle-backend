@@ -11,9 +11,17 @@ use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return ResourcesProduct::collection(Product::where("status", 1)->get());
+        try {
+            return ResourcesProduct::collection(Product::where("status", 1)->paginate(15));
+        } catch (Exception $e) {
+
+            DB::rollBack();
+            return response()->json([
+                'message' => KernelLogController::fnKernelLogMessage($e),
+            ], 400);
+        }
     }
 
     public function store(Request $request)
@@ -54,6 +62,7 @@ class ProductController extends Controller
             $product->brand = strip_tags($request->brand);
             $product->description = strip_tags($request->description);
             $product->units = strip_tags($request->units);
+            $product->active = 1;
             $product->novelty = $request->novelty == 1 ? '1' : '0';
             $product->recommended = $request->recommended == 1 ? '1' : '0';
             $product->idCategory = $request->idCategory ? strip_tags($request->idCategory) : null;
@@ -150,6 +159,36 @@ class ProductController extends Controller
         }
     }
 
+
+    public function active($id)
+    {
+
+        $product = Product::findOrFail($id);
+        if ($product == null)
+            return response()->json([
+                'message' => 'id inválido.'
+            ], 400);
+
+        try {
+
+            DB::beginTransaction();
+
+            $product->active =  $product->active==0?1:0;
+            $product->save();
+
+            DB::commit();
+            return response()->json([
+                'message' => 'Producto actualizado.',
+            ], 200);
+        } catch (Exception $e) {
+
+            DB::rollBack();
+            return response()->json([
+                'message' => KernelLogController::fnKernelLogMessage($e),
+            ], 400);
+        }
+    }
+
     public function show($id)
     {
         $product = Product::findOrFail($id);
@@ -203,12 +242,14 @@ class ProductController extends Controller
                 return ResourcesProduct::collection(Product::orderBy($request->order_name, $request->order)
                     ->where('name', 'like', '%' . $request->search . '%')
                     ->where('status', 1)
+                    ->where('active', 1)
                     ->get());
             } else {
                 return ResourcesProduct::collection(Product::where('idCategory', $request->idCategory)
                     ->orderBy($request->order_name, $request->order)
                     ->where('name', 'like', '%' . $request->search . '%')
                     ->where('status', 1)
+                    ->where('active', 1)
                     ->get());
             }
         } catch (Exception $e) {
