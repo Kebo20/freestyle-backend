@@ -36,6 +36,7 @@ Route::group([
         Route::post('files/storage', [FileController::class, 'storage']);
         Route::apiResource('products', ProductController::class);
         Route::post('products/active/{id}', [ProductController::class, 'active']);
+        Route::get('categories/list', [CategoryController::class, 'list']);
         Route::apiResource('categories', CategoryController::class);
     });
 });

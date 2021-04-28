@@ -14,7 +14,7 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         try {
-            return ResourcesProduct::collection(Product::where("status", 1)->paginate(15));
+            return ResourcesProduct::collection(Product::where("status", 1)->paginate(10));
         } catch (Exception $e) {
 
             DB::rollBack();
@@ -39,11 +39,11 @@ class ProductController extends Controller
             ], 400);
 
 
-        $exist_product = Product::where('code', $request->code)->first();
-        if ($exist_product != null)
-            return response()->json([
-                'message' => 'Ya existe un producto con el mismo código.'
-            ], 400);
+        // $exist_product = Product::where('code', $request->code)->first();
+        // if ($exist_product != null)
+        //     return response()->json([
+        //         'message' => 'Ya existe un producto con el mismo código.'
+        //     ], 400);
 
         if ($request->price < 1) {
             return response()->json([
