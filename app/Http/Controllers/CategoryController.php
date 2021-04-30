@@ -13,7 +13,7 @@ class CategoryController extends Controller
     public function index()
     {
         try {
-            return ResourcesCategory::collection(Category::where("status", 1)->get());
+            return ResourcesCategory::collection(Category::where("status", 1)->paginate(10));
         } catch (Exception $e) {
 
             DB::rollBack();
