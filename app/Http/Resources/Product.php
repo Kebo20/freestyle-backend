@@ -18,6 +18,7 @@ class Product extends JsonResource
             'brand' => htmlspecialchars($this->brand),
             'description' => htmlspecialchars($this->description),
             'image' => $this->image?$this->image:"",
+            'novelty' => $this->novelty==1?true:false,
             'units' => htmlspecialchars($this->units),
             'idCategory' => $this->idCategory,
             'active' => $this->active,
