@@ -60,7 +60,7 @@ class ProductController extends Controller
             $product->price_old = strip_tags($request->price_old);
             $product->image = ($request->image);
             $product->brand = strip_tags($request->brand);
-            $product->description = strip_tags($request->description);
+            $product->description = ($request->description);
             $product->units = strip_tags($request->units);
             $product->active = 1;
             $product->novelty = $request->novelty == 1 ? '1' : '0';
@@ -108,7 +108,7 @@ class ProductController extends Controller
             $product->price_old = strip_tags($request->price_old);
             $product->image = ($request->image);
             $product->brand = strip_tags($request->brand);
-            $product->description = strip_tags($request->description);
+            $product->description = ($request->description);
             $product->units = "";
             $product->novelty = $request->novelty == 1 ? '1' : '0';
             $product->recommended = $request->recommended == 1 ? '1' : '0';

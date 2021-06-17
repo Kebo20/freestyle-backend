@@ -16,7 +16,7 @@ class Product extends JsonResource
             'price' => htmlspecialchars(sprintf('%.2f',(htmlspecialchars($this->price)))),
             'price_old' => htmlspecialchars(sprintf('%.2f',(htmlspecialchars($this->price_old)))),
             'brand' => htmlspecialchars($this->brand),
-            'description' => htmlspecialchars($this->description),
+            'description' => ($this->description),
             'image' => $this->image?$this->image:"",
             'image_real' => $this->image?$this->image:"",
 
