@@ -8,6 +8,7 @@ use App\Models\Product;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -106,7 +107,16 @@ class ProductController extends Controller
             $product->code = strip_tags($request->code);
             $product->price = strip_tags($request->price);
             $product->price_old = strip_tags($request->price_old);
-            $product->image = ($request->image);
+
+            if ($product->image != $request->image) {
+                if(Storage::exists('/public/'.substr($product->image,9,strlen($product->image)))){
+                    Storage::delete('/public/'.substr($product->image,9,strlen($product->image)));
+
+                }
+             
+                $product->image = $request->image;
+            }
+
             $product->brand = strip_tags($request->brand);
             $product->description = ($request->description);
             $product->units = "";
@@ -173,7 +183,7 @@ class ProductController extends Controller
 
             DB::beginTransaction();
 
-            $product->active =  $product->active==0?1:0;
+            $product->active =  $product->active == 0 ? 1 : 0;
             $product->save();
 
             DB::commit();
