@@ -235,7 +235,7 @@ class ProductController extends Controller
     public function novelties(Request $request)
     {
         try {
-            return ResourcesProduct::collection(Product::where('novelty', 1)->where('status', 1)->get());
+            return ResourcesProduct::collection(Product::where('novelty', 1)->where('status', 1)->where('active', 1)->get());
         } catch (Exception $e) {
 
             DB::rollBack();
